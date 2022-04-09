@@ -1,2 +1,5 @@
 # Intelij Idea Environtment
 .idea
+
+# Setting Environtment
+.env
