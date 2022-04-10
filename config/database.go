@@ -20,14 +20,14 @@ func SetupDatabaseConnection() *gorm.DB {
 	dbHost := os.Getenv("DB_HOST")
 	dbName := os.Getenv("DB_NAME")
 	dbPort := os.Getenv("DB_PORT")
-	levelDev := os.Getenv("LEVEL_DEV")
+	//levelDev := os.Getenv("LEVEL_DEV")
 
-	var dsn string
-	if levelDev == "development" {
-		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
-	} else {
-		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
-	}
+	//var dsn string
+	//if levelDev == "development" {
+	//	dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
+	//} else {
+		dsn := fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
+	//}
 
 	// Open DB Connection
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
