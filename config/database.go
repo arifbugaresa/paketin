@@ -25,7 +25,7 @@ func SetupDatabaseConnection() *gorm.DB {
 	var dsn string
 	if levelDev == "development" {
 		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
-	} else if levelDev == "sandbox" {
+	} else {
 		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
 	}
 
