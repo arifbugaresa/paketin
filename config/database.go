@@ -37,7 +37,7 @@ func SetupDatabaseConnection() *gorm.DB {
 		fmt.Println("DB Connection Success")
 	}
 
-	migrateDatabase(db)
+	//migrateDatabase(db)
 
 	return db
 }

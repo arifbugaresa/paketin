@@ -1,16 +1,18 @@
 package main
 
 import (
+	"github.com/butga/paketin/config"
 	"github.com/butga/paketin/handler"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 var (
-	//db *gorm.DB = config.SetupDatabaseConnection()
+	db *gorm.DB = config.SetupDatabaseConnection()
 )
 
 func main() {
-	//defer config.CloseDatabaseConnection(db)
+	defer config.CloseDatabaseConnection(db)
 
 	// Routing
 	router := gin.Default()
