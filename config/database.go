@@ -9,10 +9,70 @@ import (
 	"os"
 )
 
+//func SetupDatabaseConnection() *gorm.DB {
+//
+//	// Load Environment
+//	loadEnvironmentSetting()
+//
+//	// Setting Env Database
+//	dbUser := os.Getenv("DB_USER")
+//	dbPass := os.Getenv("DB_PASSWORD")
+//	dbHost := os.Getenv("DB_HOST")
+//	dbName := os.Getenv("DB_NAME")
+//	dbPort := os.Getenv("DB_PORT")
+//	levelDev := os.Getenv("LEVEL_DEV")
+//
+//	var dsn string
+//	if levelDev == "local" {
+//		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
+//	} else {
+//		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
+//	}
+//
+//	// Open DB Connection
+//	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+//	if err != nil {
+//		log.Fatalln("DB Connection Failed")
+//	} else {
+//		fmt.Println("DB Connection Success")
+//	}
+//
+//	//migrateDatabase(db)
+//
+//	return db
+//}
+//
+//func CloseDatabaseConnection(db *gorm.DB) {
+//	database, err := db.DB()
+//	if err != nil {
+//		panic("Failed to close connection from database")
+//	}
+//	database.Close()
+//}
+//
+//func migrateDatabase(db *gorm.DB) {
+//	db.AutoMigrate()
+//}
+//
+//func loadEnvironmentSetting() {
+//	err := godotenv.Load(".env")
+//	if err != nil {
+//		fmt.Println("Error read .env file")
+//	} else {
+//		fmt.Println("Success read .env file")
+//	}
+//}
+
+
 func SetupDatabaseConnection() *gorm.DB {
 
 	// Load Environment
-	loadEnvironmentSetting()
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Println("Error env")
+	} else {
+		println("Succes read env file")
+	}
 
 	// Setting Env Database
 	dbUser := os.Getenv("DB_USER")
@@ -20,45 +80,27 @@ func SetupDatabaseConnection() *gorm.DB {
 	dbHost := os.Getenv("DB_HOST")
 	dbName := os.Getenv("DB_NAME")
 	dbPort := os.Getenv("DB_PORT")
-	//levelDev := os.Getenv("LEVEL_DEV")
 
-	//var dsn string
-	//if levelDev == "development" {
-	//	dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
-	//} else {
-		dsn := fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
-	//}
+	// Local Config
+	//dsn := fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
+
+	// Sandbox Config
+	dsn := fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta`, dbHost, dbUser, dbPass, dbPort, dbName)
 
 	// Open DB Connection
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalln("DB Connection Failed")
-	} else {
-		fmt.Println("DB Connection Success")
 	}
-
-	//migrateDatabase(db)
+	fmt.Println("DB Connection Success")
 
 	return db
 }
 
-func CloseDatabaseConnection(db *gorm.DB) {
+func CloseDatabaseConnection(db *gorm.DB)  {
 	database, err := db.DB()
 	if err != nil {
 		panic("Failed to close connection from database")
 	}
 	database.Close()
-}
-
-func migrateDatabase(db *gorm.DB) {
-	db.AutoMigrate()
-}
-
-func loadEnvironmentSetting() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Println("Error read .env file")
-	} else {
-		fmt.Println("Success read .env file")
-	}
 }
