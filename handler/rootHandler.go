@@ -8,7 +8,7 @@ import (
 func Welcome(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"app_name" : "paketin",
-		"version" : "1.0.0",
+		"version" : "1.0.1",
 	})
 }
 
