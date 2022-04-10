@@ -12,7 +12,10 @@ func main()  {
 	// Versioning
 	version := "/v1"
 
-	// Grouping
+	// API Information Routes
+	router.GET("", handler.Welcome)
+
+	// Grouping Routes
 	rootRoutes := router.Group(version+"/api")
 	{
 		rootRoutes.GET("/health", handler.Health)
