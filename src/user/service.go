@@ -25,12 +25,12 @@ func (s *service) Create(context *gin.Context) {
 
 	userModel := convertDTOToModel(user)
 
-	UserDB, err := s.repository.FindByUsername(userModel.Username)
-	if UserDB.Username == userModel.Username {
+	UserDB, err := s.repository.FindByNamaKantor(userModel.NamaKantor)
+	if UserDB.NamaKantor == userModel.NamaKantor {
 		context.JSON(http.StatusBadRequest, gin.H{
 			"ajarin": src.Payload{
 				Code:    400,
-				Message: "Username telah digunakan",
+				Message: "Kantor sudah terdaftar dalam sistem.",
 				Data:    nil,
 			},
 		})
@@ -77,7 +77,6 @@ func readBody(context *gin.Context) (user UserRequest){
 func convertDTOToModel(user UserRequest) User{
 	return User{
 		ID: user.ID,
-		Username: user.Username,
 		Password: user.Password,
 		NamaKantor: user.NamaKantor,
 		NamaAdmin: user.NamaAdmin,

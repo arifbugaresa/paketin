@@ -6,7 +6,7 @@ import (
 
 type Repository interface {
 	Create(user User) error
-	FindByUsername(username string) (User, error)
+	FindByNamaKantor(namaKantor string) (User, error)
 }
 
 type repository struct {
@@ -23,9 +23,9 @@ func (r *repository) Create(user User) error {
 	return err
 }
 
-func (r *repository) FindByUsername(username string) (User, error) {
+func (r *repository) FindByNamaKantor(namaKantor string) (User, error) {
 	var userDB User
-	err := r.db.Where("username = ?", username).First(&userDB).Error
+	err := r.db.Where("nama_kantor = ?", namaKantor).First(&userDB).Error
 
 	return userDB, err
 }

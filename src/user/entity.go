@@ -10,7 +10,6 @@ type User struct {
 	NamaAdmin    string
 	NomorKantor  string
 	AlamatKantor string
-	Username     string
 	Password     string
 	CreatedAt    time.Time
 	Deleted      string

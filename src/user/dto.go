@@ -2,7 +2,6 @@ package user
 
 type UserRequest struct {
 	ID           int64  `json:"id"`
-	Username     string `json:"username"`
 	Password     string `json:"password"`
 	NamaKantor   string `json:"nama_kantor"`
 	NamaAdmin    string `json:"nama_admin"`
