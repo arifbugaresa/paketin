@@ -16,3 +16,7 @@ func NewUserHandler(service user.Service) *userHandler {
 func (h *userHandler) PostUserHandler(context *gin.Context) {
 	h.userService.Create(context)
 }
+
+func (h *userHandler) GetUsersHandler(context *gin.Context) {
+	h.userService.FindAll(context)
+}

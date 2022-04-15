@@ -1,14 +1,14 @@
 package user
 
 import (
-	"github.com/butga/paketin/src"
+	"github.com/butga/paketin/errorModel"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"time"
 )
 
 type Service interface {
 	Create(context *gin.Context)
+	FindAll(context *gin.Context)
 }
 
 type service struct {
@@ -27,48 +27,43 @@ func (s *service) Create(context *gin.Context) {
 
 	UserDB, err := s.repository.FindByNamaKantor(userModel.NamaKantor)
 	if UserDB.NamaKantor == userModel.NamaKantor {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"ajarin": src.Payload{
-				Code:    400,
-				Message: "Kantor sudah terdaftar dalam sistem.",
-				Data:    nil,
-			},
-		})
+		errorModel.GenerateDuplicateRegisterUser(context)
 		return
 	}
 
 	err = s.repository.Create(userModel)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"ajarin": src.Payload{
-				Code:    400,
-				Message: "Gagal menambahkan data user",
-				Data:    nil,
-			},
-		})
+		errorModel.GenerateFailedAddData(context, "user")
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{
-		"ajarin": src.Payload{
-			Code:    200,
-			Message: "Berhasil menambahkan data user",
-			Data:    nil,
-		},
-	})
+	errorModel.GenerateNonErrorMessage(context, "Berhasil menambahkan data user")
+	return
+}
+
+func (s *service) FindAll(context *gin.Context) {
+
+	usersDB, err := s.repository.FindAll()
+	if err != nil {
+		errorModel.GenerateInternalServerError(context, "gagal mengambil semua data user")
+		return
+	}
+
+	var usersResponse []UserResponse
+	for _, u := range usersDB {
+		user := convertModelToDTOOut(u)
+		usersResponse = append(usersResponse, user)
+	}
+
+	errorModel.GenerateNonErrorMessageWithData(context, "Berhasil mengambil data user.", usersResponse)
 	return
 }
 
 func readBody(context *gin.Context) (user UserRequest){
 	err := context.ShouldBindJSON(&user)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{
-			"ajarin": src.Payload{
-				Code:    400,
-				Message: "Gagal parsing request",
-				Data:    nil,
-			},
-		})
+		errorModel.GenerateFailedParsingRequest(context)
+		return
 	}
 
 	return
@@ -84,5 +79,14 @@ func convertDTOToModel(user UserRequest) User{
 		NomorKantor: user.NomorKantor,
 		CreatedAt: time.Now(),
 		Deleted: "false",
+	}
+}
+
+func convertModelToDTOOut(user User) UserResponse {
+	return UserResponse{
+		NamaKantor:   user.NamaKantor,
+		NamaAdmin:    user.NamaAdmin,
+		AlamatKantor: user.AlamatKantor,
+		NomorKantor:  user.NomorKantor,
 	}
 }
