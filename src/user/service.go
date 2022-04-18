@@ -12,6 +12,7 @@ type Service interface {
 	Create(context *gin.Context)
 	FindAll(context *gin.Context)
 	Delete(context *gin.Context)
+	Find(context *gin.Context)
 }
 
 type service struct {
@@ -58,7 +59,7 @@ func (s *service) FindAll(context *gin.Context) {
 		usersResponse = append(usersResponse, user)
 	}
 
-	errorModel.GenerateNonErrorMessageWithData(context, "Berhasil mengambil data user.", usersResponse)
+	errorModel.GenerateNonErrorMessageWithData(context, "Berhasil mengambil seluruh data user.", usersResponse)
 	return
 }
 
@@ -86,6 +87,27 @@ func (s *service) Delete(context *gin.Context) {
 	}
 
 	errorModel.GenerateNonErrorMessage(context, "Berhasil menghapus data")
+	return
+}
+
+func (s *service) Find(context *gin.Context) {
+
+	idString := context.Param("id")
+	id, err := strconv.Atoi(idString)
+
+	// Validation Get User On DB
+	usersDB, err := s.repository.FindByID(id)
+	if err != nil {
+		errorModel.GenerateRequestIDError(context, "user id")
+		return
+	} else if usersDB.ID < 1 {
+		errorModel.GenerateInternalServerError(context, "user id tidak ditemukan")
+		return
+	}
+
+	user := convertModelToViewDTOOut(usersDB)
+
+	errorModel.GenerateNonErrorMessageWithData(context, "Berhasil mengambil data user", user)
 	return
 }
 

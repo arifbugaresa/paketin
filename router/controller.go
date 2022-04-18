@@ -33,6 +33,7 @@ func Controller(db *gorm.DB) {
 		userRoutes.POST("/users", userHandler.PostUserHandler)
 		userRoutes.GET("/users", userHandler.GetUsersHandler)
 		userRoutes.DELETE("/users/:id", userHandler.DeleteUsersHandler)
+		userRoutes.GET("/users/:id", userHandler.GetUserHandler)
 	}
 
 	router.Run()

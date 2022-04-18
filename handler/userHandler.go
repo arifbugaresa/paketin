@@ -21,6 +21,10 @@ func (h *userHandler) GetUsersHandler(context *gin.Context) {
 	h.userService.FindAll(context)
 }
 
+func (h *userHandler) GetUserHandler(context *gin.Context) {
+	h.userService.Find(context)
+}
+
 func (h *userHandler) DeleteUsersHandler(context *gin.Context) {
 	h.userService.Delete(context)
 }
