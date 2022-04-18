@@ -3,6 +3,9 @@ package paket
 import (
 	"github.com/butga/paketin/errorModel"
 	"github.com/gin-gonic/gin"
+	"math/rand"
+	"strconv"
+	"time"
 )
 
 type Service interface {
@@ -44,13 +47,7 @@ func (s *service) Create(context *gin.Context) {
 
 	paketModel := convertDTOToModel(paket)
 
-	//nomorResi := generateNomorResi()
-
-	//paketOnDb, err := s.repository.FindByNoResi(nomorResi)
-	//if paketOnDb.ID == userModel.NamaKantor {
-	//	errorModel.GenerateDuplicateRegisterUser(context)
-	//	return
-	//}
+	paketModel.NomorResi = s.generateNomorResi()
 
 	err := s.repository.Create(paketModel)
 	if err != nil {
@@ -60,6 +57,27 @@ func (s *service) Create(context *gin.Context) {
 
 	errorModel.GenerateNonErrorMessage(context, "Berhasil menambahkan data paket")
 	return
+}
+
+func (s *service) generateNomorResi() string {
+
+	var nomorResi string
+
+	isUnix := false
+	for isUnix == false {
+		s1 := rand.NewSource(time.Now().UnixNano())
+		r1 := rand.New(s1)
+		randomInteger := r1.Intn(10000000)
+
+		nomorResi = "PKTN-" + strconv.Itoa(randomInteger)
+
+		paket, _ := s.repository.FindByNoResi(nomorResi)
+		if paket.ID == 0 {
+			isUnix = true
+		}
+	}
+
+	return nomorResi
 }
 
 
