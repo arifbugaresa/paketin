@@ -20,3 +20,7 @@ func (h *userHandler) PostUserHandler(context *gin.Context) {
 func (h *userHandler) GetUsersHandler(context *gin.Context) {
 	h.userService.FindAll(context)
 }
+
+func (h *userHandler) DeleteUsersHandler(context *gin.Context) {
+	h.userService.Delete(context)
+}

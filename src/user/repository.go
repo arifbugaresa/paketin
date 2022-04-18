@@ -8,6 +8,8 @@ type Repository interface {
 	Create(user User) error
 	FindByNamaKantor(namaKantor string) (User, error)
 	FindAll() ([]User, error)
+	FindByID(ID int) (User, error)
+	Save(user User) error
 }
 
 type repository struct {
@@ -36,4 +38,16 @@ func (r *repository) FindAll() ([]User, error) {
 	err := r.db.Where("deleted = ?", "false").Find(&allUserDB).Error
 
 	return allUserDB, err
+}
+
+func (r *repository) FindByID(ID int) (User, error) {
+	var user User
+
+	err := r.db.Where("deleted = ?", "false").Find(&user, ID).Error
+
+	return user, err
+}
+
+func (r *repository) Save(user User) error {
+	return r.db.Save(&user).Error
 }
