@@ -26,6 +26,16 @@ func GenerateRequestIDError(context *gin.Context, ID string)  {
 	})
 }
 
+func GenerateRequestStatusError(context *gin.Context, status string)  {
+	context.JSON(http.StatusInternalServerError, gin.H{
+		"paketin": src.Payload{
+			Code:    500,
+			Message: "Terjadi kesalahan sistem, " + status + " tidak sesuai.",
+			Data:    nil,
+		},
+	})
+}
+
 func GenerateDuplicateRegisterUser(context *gin.Context)  {
 	context.JSON(http.StatusBadRequest, gin.H{
 		"paketin": src.Payload{

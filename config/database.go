@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"github.com/butga/paketin/src/paket"
 	"github.com/butga/paketin/src/user"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -52,7 +53,7 @@ func CloseDatabaseConnection(db *gorm.DB) {
 }
 
 func migrateDatabase(db *gorm.DB) {
-	db.AutoMigrate(&user.User{})
+	db.AutoMigrate(&user.User{}, &paket.Paket{})
 }
 
 func loadEnvironmentSetting() {
