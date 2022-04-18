@@ -116,6 +116,14 @@ func convertModelToDTOOut(user User) UserResponse {
 	return UserResponse{
 		ID:           user.ID,
 		NamaKantor:   user.NamaKantor,
+		NomorKantor:  user.NomorKantor,
+	}
+}
+
+func convertModelToViewDTOOut(user User) DetailUserResponse {
+	return DetailUserResponse{
+		ID:           user.ID,
+		NamaKantor:   user.NamaKantor,
 		NamaAdmin:    user.NamaAdmin,
 		AlamatKantor: user.AlamatKantor,
 		NomorKantor:  user.NomorKantor,

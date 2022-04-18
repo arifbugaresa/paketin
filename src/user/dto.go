@@ -11,10 +11,19 @@ type UserRequest struct {
 }
 
 //DTO Out
+
 type UserResponse struct {
+	ID           int64  `json:"id"`
+	NamaKantor   string `json:"nama_kantor"`
+	NomorKantor  string `json:"nomor_kantor"`
+}
+
+type DetailUserResponse struct {
 	ID           int64  `json:"id"`
 	NamaKantor   string `json:"nama_kantor"`
 	NamaAdmin    string `json:"nama_admin"`
 	AlamatKantor string `json:"alamat_kantor"`
 	NomorKantor  string `json:"nomor_kantor"`
 }
+
+
