@@ -11,6 +11,8 @@ type User struct {
 	NomorKantor  string
 	AlamatKantor string
 	Password     string
+	IsSuperAdmin bool `gorm:"default:false"`
 	CreatedAt    time.Time
-	Deleted      string
+	Deleted      string `gorm:"default:false"`
+	DeletedAt    time.Time
 }

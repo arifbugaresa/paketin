@@ -83,6 +83,7 @@ func (s *service) Delete(context *gin.Context) {
 
 		usersDB.NamaKantor += strconv.Itoa(r1.Intn(100000))
 		usersDB.Deleted = "true"
+		usersDB.DeletedAt = time.Now()
 
 		s.repository.Save(usersDB)
 	}
