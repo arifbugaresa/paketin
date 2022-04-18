@@ -68,6 +68,7 @@ func (s *service) Delete(context *gin.Context) {
 	idString := context.Param("id")
 	id, err := strconv.Atoi(idString)
 
+
 	// Validation Get User On DB
 	usersDB, err := s.repository.FindByID(id)
 	if err != nil {
