@@ -5,6 +5,7 @@ import "gorm.io/gorm"
 type Repository interface {
 	Create(paket Paket) error
 	FindByNoResi(noResi string) (Paket, error)
+	FindAll() ([]Paket, error)
 }
 
 type repository struct {
@@ -24,6 +25,13 @@ func (r *repository) Create(paket Paket) error {
 func (r *repository) FindByNoResi(noResi string) (Paket, error) {
 	var paket Paket
 	err := r.db.Where("nomor_resi = ?", noResi).First(&paket).Error
+
+	return paket, err
+}
+
+func (r *repository) FindAll() ([]Paket, error) {
+	var paket []Paket
+	err := r.db.Select([]string{"id", "nomor_resi", "produk"}).Find(&paket).Error
 
 	return paket, err
 }

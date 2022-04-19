@@ -10,6 +10,7 @@ import (
 
 type Service interface {
 	Create(context *gin.Context)
+	FindAll(context *gin.Context)
 }
 
 type service struct {
@@ -39,6 +40,24 @@ func convertDTOToModel(paket PaketRequest) Paket {
 		NomorPenerima: paket.NomorPenerima,
 		AlamatTujuan:  paket.AlamatTujuan,
 	}
+}
+
+func (s *service) FindAll(context *gin.Context) {
+
+	listPaketDB, err := s.repository.FindAll()
+	if err != nil {
+		errorModel.GenerateInternalServerError(context, "gagal mengambil semua data paket")
+		return
+	}
+
+	var listPaketResponse []PaketResponse
+	for _, p := range listPaketDB {
+		paketResponse := convertModelToDTOOut(p)
+		listPaketResponse = append(listPaketResponse, paketResponse)
+	}
+
+	errorModel.GenerateNonErrorMessageWithData(context, "Berhasil mengambil seluruh data user.", listPaketResponse)
+	return
 }
 
 func (s *service) Create(context *gin.Context) {
@@ -80,4 +99,10 @@ func (s *service) generateNomorResi() string {
 	return nomorResi
 }
 
-
+func convertModelToDTOOut(paket Paket) PaketResponse {
+	return PaketResponse{
+		ID:        paket.ID,
+		NomorResi: paket.NomorResi,
+		Produk:    paket.Produk,
+	}
+}

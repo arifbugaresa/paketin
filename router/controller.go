@@ -44,6 +44,7 @@ func Controller(db *gorm.DB) {
 	paketRoutes := router.Group(version + "/api")
 	{
 		paketRoutes.POST("/pakets", paketHandler.PostPaketHandler)
+		paketRoutes.GET("/pakets", paketHandler.GetPaketsHandler)
 	}
 
 	router.Run()

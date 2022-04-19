@@ -16,3 +16,7 @@ func NewPaketHandler(service paket.Service) *paketHandler {
 func (h *paketHandler) PostPaketHandler(context *gin.Context) {
 	h.paketService.Create(context)
 }
+
+func (h *paketHandler) GetPaketsHandler(context *gin.Context) {
+	h.paketService.FindAll(context)
+}

@@ -8,3 +8,9 @@ type PaketRequest struct {
 	NomorPenerima string `json:"nomor_penerima"`
 	AlamatTujuan  string `json:"alamat_tujuan"`
 }
+
+type PaketResponse struct {
+	ID           int64  `json:"id"`
+	NomorResi    string `json:"nomor_resi"`
+	Produk       string `json:"produk"`
+}
