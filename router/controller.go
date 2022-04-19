@@ -45,6 +45,7 @@ func Controller(db *gorm.DB) {
 	{
 		paketRoutes.POST("/pakets", paketHandler.PostPaketHandler)
 		paketRoutes.GET("/pakets", paketHandler.GetPaketsHandler)
+		paketRoutes.GET("/pakets/:id", paketHandler.GetPaketHandler)
 	}
 
 	router.Run()

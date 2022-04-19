@@ -6,6 +6,7 @@ type Repository interface {
 	Create(paket Paket) error
 	FindByNoResi(noResi string) (Paket, error)
 	FindAll() ([]Paket, error)
+	FindByID(ID int) (Paket, error)
 }
 
 type repository struct {
@@ -32,6 +33,14 @@ func (r *repository) FindByNoResi(noResi string) (Paket, error) {
 func (r *repository) FindAll() ([]Paket, error) {
 	var paket []Paket
 	err := r.db.Select([]string{"id", "nomor_resi", "produk"}).Find(&paket).Error
+
+	return paket, err
+}
+
+func (r *repository) FindByID(ID int) (Paket, error) {
+	var paket Paket
+
+	err := r.db.Find(&paket, ID).Error
 
 	return paket, err
 }

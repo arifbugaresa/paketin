@@ -20,3 +20,7 @@ func (h *paketHandler) PostPaketHandler(context *gin.Context) {
 func (h *paketHandler) GetPaketsHandler(context *gin.Context) {
 	h.paketService.FindAll(context)
 }
+
+func (h *paketHandler) GetPaketHandler(context *gin.Context) {
+	h.paketService.Find(context)
+}

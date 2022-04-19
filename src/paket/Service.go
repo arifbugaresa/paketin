@@ -11,6 +11,7 @@ import (
 type Service interface {
 	Create(context *gin.Context)
 	FindAll(context *gin.Context)
+	Find(context *gin.Context)
 }
 
 type service struct {
@@ -76,6 +77,41 @@ func (s *service) Create(context *gin.Context) {
 
 	errorModel.GenerateNonErrorMessage(context, "Berhasil menambahkan data paket")
 	return
+}
+
+func (s *service) Find(context *gin.Context) {
+
+	idString := context.Param("id")
+	id, err := strconv.Atoi(idString)
+
+	// Validation Get User On DB
+	paketDB, err := s.repository.FindByID(id)
+	if err != nil {
+		errorModel.GenerateRequestIDError(context, "id paket")
+		return
+	} else if paketDB.ID < 1 {
+		errorModel.GenerateInternalServerError(context, "id paket tidak ditemukan")
+		return
+	}
+
+	paket := convertModelToViewDTOOut(paketDB)
+
+	errorModel.GenerateNonErrorMessageWithData(context, "Berhasil mengambil data paket", paket)
+	return
+}
+
+func convertModelToViewDTOOut(paket Paket) PaketDetaiResponse {
+	return PaketDetaiResponse{
+		ID:            paket.ID,
+		NomorResi:     paket.NomorResi,
+		Produk:        paket.Produk,
+		BeratPaket:    paket.BeratPaket,
+		NamaPengirim:  paket.NamaPengirim,
+		NamaPenerima:  paket.NomorPenerima,
+		NomorPenerima: paket.NomorPenerima,
+		AlamatTujuan:  paket.AlamatTujuan,
+		Status:        paket.Status,
+	}
 }
 
 func (s *service) generateNomorResi() string {
