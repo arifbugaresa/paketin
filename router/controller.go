@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/butga/paketin/handler"
 	"github.com/butga/paketin/src/paket"
+	"github.com/butga/paketin/src/posisi"
 	"github.com/butga/paketin/src/user"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -46,6 +47,15 @@ func Controller(db *gorm.DB) {
 		paketRoutes.POST("/pakets", paketHandler.PostPaketHandler)
 		paketRoutes.GET("/pakets", paketHandler.GetPaketsHandler)
 		paketRoutes.GET("/pakets/:id", paketHandler.GetPaketHandler)
+	}
+
+	// Posisi Routes
+	posisiRepository := posisi.NewRepository(db)
+	posisiService := posisi.NewService(posisiRepository)
+	posisiHandler := handler.NewPosisiHandler(posisiService)
+	posisiRoutes := router.Group(version + "/api")
+	{
+		posisiRoutes.POST("/posisis", posisiHandler.PostPosisiHandler)
 	}
 
 	router.Run()
