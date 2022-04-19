@@ -68,6 +68,7 @@ func (s *service) Create(context *gin.Context) {
 	paketModel := convertDTOToModel(paket)
 
 	paketModel.NomorResi = s.generateNomorResi()
+	paketModel.CreatedAt = time.Now()
 
 	err := s.repository.Create(paketModel)
 	if err != nil {
@@ -124,7 +125,7 @@ func (s *service) generateNomorResi() string {
 		r1 := rand.New(s1)
 		randomInteger := r1.Intn(10000000)
 
-		nomorResi = "PKTN-" + strconv.Itoa(randomInteger)
+		nomorResi = "PKTN" + strconv.Itoa(randomInteger)
 
 		paket, _ := s.repository.FindByNoResi(nomorResi)
 		if paket.ID == 0 {

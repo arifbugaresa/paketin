@@ -1,5 +1,7 @@
 package paket
 
+import "time"
+
 type Paket struct {
 	ID            int64 `gorm:"column:id;primaryKey;autoIncrement"`
 	NomorResi     string
@@ -10,11 +12,6 @@ type Paket struct {
 	NomorPenerima string
 	AlamatTujuan  string
 	Status        string `gorm:"default:dikemas"`
+	DeliveredAt   time.Time
+	CreatedAt     time.Time
 }
-
-//func (p Paket) ValidateStatus(status string) {
-//
-//	if (status != "dikemas") || (status != "dikirim") || (status != "selesai"){
-//		errorModel.GenerateRequestStatusError(con)
-//	}
-//}
