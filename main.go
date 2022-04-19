@@ -9,6 +9,8 @@ import (
 var db *gorm.DB = config.SetupDatabaseConnection()
 
 func main() {
+	// Sandbox 19-04-2022
+
 	defer config.CloseDatabaseConnection(db)
 
 	router.Controller(db)
